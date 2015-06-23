@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+
+    <!-- compiled css output -->
+    <link href="css/ionic.app.css" rel="stylesheet">
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="logica.js"></script>
+    <script src="logica-services.js"></script>
+  </head>  
+  <body ng-app="logica" ng-controller="Ctrl"> <!-- Controlador con codigo angular -->
+
+    <ion-header-bar class="bar-positive"> <!-- Header bar  -->
+        <button class="button button-icon ion-trash-a" 
+          ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+        <h1 class="title">Formulario de Tareas</h1>
+        
+        <button class="button button-icon ion-arrow-move"
+          ng-click="data.showDelete = false; data.showReorder = !data.showReorder"></button>
+    </ion-header-bar>
+    
+    <ion-content>
+    
+        <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+          <ion-item ng-show="!tasks.length">
+            Vacío
+          </ion-item>
+          
+          <ion-item ng-show="tasks.length" ng-repeat="task in tasks" item="task">
+            {{task.task_name}}
+            <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task.task_id)"></ion-delete-button>
+            <ion-option-button class="button-assertive" ng-click="onItemEdit(task.task_id)">Editar</ion-option-button>
+            <ion-reorder-button class="ion-navicon" on-reoder="moveItem(task.task_id, $fromIndex, $toIndex)"></ion-reorder-button>
+          </ion-item>
+        </ion-list>
+        
+    </ion-content>
+    
+    
+        
+    <!-- ventana user que puede hacer accion, formulario  -->
+    <script id="new-task.html" type="text/ng-template"> 
+
+      <div class="modal">
+
+        <!-- Modal header bar -->
+        <ion-header-bar class="bar-stable">
+          <h1 class="title">Nueva Tarea</h1>
+          <button class="button button-clear button-positive" ng-click="closeNewTask()">Cancelar</button>
+        </ion-header-bar>
+
+        <!-- Modal content area -->
+        <ion-content>
+
+          <form ng-submit="createTask(task)">
+            <div class="list">
+              <label class="item item-input">
+                <input type="text" placeholder="Tareas a realizar ?" ng-model="task.title">
+              </label>
+            </div>
+            <div class="padding">
+              <button type="submit" class="button button-block button-positive">Añadir</button>
+            </div>
+          </form>
+
+        </ion-content>
+
+      </div>
+
+    </script>
+    <!-- Footer con boton-->
+    <ion-footer-bar class="bar-positive"> 
+        <!-- New Task button-->
+        <button class="button button-icon pull-right" ng-click="newTask()">
+          <i class="icon ion-compose"></i>
+        </button>
+    </ion-footer-bar>
+
+  </body>
+
+</html>
